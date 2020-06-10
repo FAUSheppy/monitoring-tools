@@ -29,7 +29,7 @@ if __name__ == "__main__":
     serviceName = args.e
     if args.u:
         serviceName = args.u
-    message = "*{service} {state} on {host}*\n{output}\Icingaweb: {url}".format(
+    message = "*{service} {state} on {host}*\n{output}\n**Icingaweb**: [{url}]({url})".format(
                     service=serviceName, state=args.s, host=args.l, output=args.o, url=args.i)
 
     # create and send request #
