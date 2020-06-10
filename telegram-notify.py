@@ -33,7 +33,6 @@ if __name__ == "__main__":
                     service=serviceName, state=args.s, host=args.l, output=args.o, url=args.i)
 
     # create and send request #
-    jsonPayload = { 'message'      : message           }
-    headers     = { 'Content-Type' : 'application/json'}
+    jsonPayload = { 'message' : message }
     url = "http://localhost:{port}/send-all".format(port=args.target_port)
-    requests.post(url, data=jsonPayload, headers=headers)
+    requests.post(url, json=jsonPayload)
