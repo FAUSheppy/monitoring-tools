@@ -26,12 +26,11 @@ if __name__ == "__main__":
 
     cmd = [ "/usr/local/bin/rcon", "-P{}".format(password), "-a{}".format(args.host),
             "-p{}".format(args.port), "sm plugins info Skillbird" ]
-    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=ENCODING)
-    out = p.stdout.encode("ascii")
+    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
     if p.returncode != 0:
-        print("Insurgency CRITICAL - {}".format(out))
+        print("Insurgency CRITICAL - {}".format(p.stdout))
         sys.exit(1)
-    elif "not loaded" in out:
+    elif "not loaded" in p.stdout:
         print("Insurgency WARNING - {}".format(out))
         sys.exit(2)
     else:
