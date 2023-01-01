@@ -14,16 +14,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     password = None
-    if not os.path.isfile(PW_FILE):
+    try:
+        with open(PW_FILE) as f:
+            password = f.read().strip()
+    except PermissionError as e:
+        print("Insurgency CRITICAL - Permission Error on /etc/rcon.pass".
+        sys.exit(1)
+    except FileNotFoundError as e:
         print("Insurgency CRITICAL - Missing /etc/rcon.pass".
         sys.exit(1)
 
-    with open(PW_FILE) as f:
-        password = f.read().strip()
-
     cmd = [ "/usr/local/bin/rcon", "-P{}".format(password), "-a{}".format(args.host),
-                "-p{}".format(port), "sm plugins info Skillbird" ]
-
+            "-p{}".format(port), "sm plugins info Skillbird" ]
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=ENCODING)
     out = p.stdout.encode("ascii")
     if p.returncode != 0:
