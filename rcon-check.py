@@ -31,7 +31,7 @@ if __name__ == "__main__":
         print("Insurgency CRITICAL - {}".format(p.stdout))
         sys.exit(1)
     elif "not loaded" in p.stdout:
-        print("Insurgency WARNING - {}".format(out))
+        print("Insurgency WARNING - {}".format(p.stdout))
         sys.exit(2)
     else:
         print("Insurgency OK")
