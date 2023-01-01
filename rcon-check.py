@@ -25,7 +25,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     cmd = [ "/usr/local/bin/rcon", "-P{}".format(password), "-a{}".format(args.host),
-            "-p{}".format(port), "sm plugins info Skillbird" ]
+            "-p{}".format(args.port), "sm plugins info Skillbird" ]
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=ENCODING)
     out = p.stdout.encode("ascii")
     if p.returncode != 0:
