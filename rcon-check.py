@@ -18,10 +18,10 @@ if __name__ == "__main__":
         with open(PW_FILE) as f:
             password = f.read().strip()
     except PermissionError as e:
-        print("Insurgency CRITICAL - Permission Error on /etc/rcon.pass".
+        print("Insurgency CRITICAL - Permission Error on /etc/rcon.pass")
         sys.exit(1)
     except FileNotFoundError as e:
-        print("Insurgency CRITICAL - Missing /etc/rcon.pass".
+        print("Insurgency CRITICAL - Missing /etc/rcon.pass")
         sys.exit(1)
 
     cmd = [ "/usr/local/bin/rcon", "-P{}".format(password), "-a{}".format(args.host),
