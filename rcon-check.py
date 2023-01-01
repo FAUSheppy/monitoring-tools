@@ -2,6 +2,7 @@
 import sys
 import argparse
 import subprocess
+import os
 
 PW_FILE="/etc/rcon.pass"
 
@@ -13,6 +14,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     password = None
+    if not os.path.isfile(PW_FILE):
+        print("Insurgency CRITICAL - Missing /etc/rcon.pass".
+        sys.exit(1)
+
     with open(PW_FILE) as f:
         password = f.read().strip()
 
