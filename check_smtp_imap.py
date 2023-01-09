@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import smtplib, ssl
+import requests
 import sys
 import secrets
 import datetime
@@ -10,14 +11,18 @@ import time
 import imaplib
 import json
 
+args = None
+
 def exit(status, info):
-    print("{}{}".format(status, info))
-    if status == "OK":
-        sys.exit(0)
-    elif status == "WARNING":
-        sys.exit(2)
-    else:
-        sys.exit(1)
+
+    content = { "service" : args.monitoring_service_name,
+				"status" : status,
+				"token" : args.monitoring_token,
+				"info" : info }
+
+    r = requests.post(args.monitoring_server, json=content)
+    print(r.content)
+    sys.exit(0)
 
 
 if __name__ == "__main__":
@@ -30,8 +35,12 @@ if __name__ == "__main__":
     parser.add_argument("--imap-user",                help="IMAP User for receiver Mail")
     parser.add_argument("--imap-pass", required=True, help="IMAP Password for receiver Mail")
     parser.add_argument("--port",      default=587,   help="Target (START_TLS) port")
+    parser.add_argument("--monitoring-server", required=True)
+    parser.add_argument("--monitoring-token", required=True)
+    parser.add_argument("--monitoring-service-name", required=True)
 
     args = parser.parse_args()
+
     imap_user = args.imap_user
     if not imap_user:
         imap_user = args.receiver
