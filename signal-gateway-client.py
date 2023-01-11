@@ -24,7 +24,9 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--service-display-name', required=False, help="Service Display Name")
 
     parser.add_argument('-v', required=False, help="Deprecated. Compability only. Has no Effect.")
-    parser.add_argument('--target-port', default=6000, help="Target port on which Telegram Gateway is running")
+    parser.add_argument('-w', '--target-port', default=6000, help="Signal Gateway Port")
+    parser.add_argument('-x', '--target-host', default="localhost", help="Signal Gateway Address")
+    parser.add_argument('-y', '--target-proto', default="http", help="Signal proto")
     args = parser.parse_args()
 
     # build message # 
@@ -33,5 +35,7 @@ if __name__ == "__main__":
         serviceName = args.service_display_name
 
     # create and send request #
-    url = "http://localhost:{port}/send-all-icinga".format(port=args.target_port)
+    url = "{proto}://{host}:{port}/send-all-icinga".format(host=args.target_host, \
+                                                        port=args.target_port,\
+                                                        proto=args.target_proto)
     requests.post(url, json=vars(args))
