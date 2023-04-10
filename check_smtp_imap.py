@@ -114,4 +114,4 @@ if __name__ == "__main__":
         time.sleep(10)
 
     # if we didn't find anything #
-    exit("CRITICAL", "Challange not found via IMAP")
+    exit("CRITICAL", "Challenge not found via IMAP")
