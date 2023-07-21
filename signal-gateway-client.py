@@ -67,6 +67,6 @@ if __name__ == "__main__":
         struct = {
             "users" : args.owners,
             "groups" : args.owner_groups,
-            "data" : "testtest" #vars(args)
+            "data" : vars(args)
         }
         requests.post(url, json=struct, auth=(user, password))
