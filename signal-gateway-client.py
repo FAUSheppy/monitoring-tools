@@ -38,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument('--owners', nargs='+', required=False)
     parser.add_argument('--owner-groups', nargs='+', required=False)
     parser.add_argument('--legacy-gateway', default=False, required=False)
+    parser.add_argument('--type', default="icinga", required=False)
 
     parser.add_argument('--dispatcher-pass-file', default="/etc/icinga2/dispatcher-pass-file.txt")
 
