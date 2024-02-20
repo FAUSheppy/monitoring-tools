@@ -49,6 +49,7 @@ if __name__ == "__main__":
     if os.path.isfile(args.dispatcher_pass_file) or os.path.islink(args.dispatcher_pass_file):
         with open(args.dispatcher_pass_file) as f:
             user, password = f.read().split()
+            access_token = password # new style auth
 
     # build message # 
     serviceName = args.service_name
@@ -64,7 +65,7 @@ if __name__ == "__main__":
         url = base_url + "/send-all-icinga"
         requests.post(url, json=vars(args))
     else:
-        url = base_url + "/smart-send"
+        url = base_url + "/smart-send?dispatch-access-token={}".format(access_token)
         struct = {
             "users" : args.owners,
             "groups" : args.owner_groups,
