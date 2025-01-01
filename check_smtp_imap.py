@@ -53,7 +53,8 @@ if __name__ == "__main__":
         "origin" : socket.gethostname(),
     }
 
-    message = message = 'Subject: Monitoring Challenge\n\n{}'.format(json.dumps(challenge))
+    message = 'From: {}\nTo: {}\nSubject: Monitoring Challenge\n\n{}'.format(
+                    args.sender, args.receiver, json.dumps(challenge))
 
     context = ssl.create_default_context()
 
