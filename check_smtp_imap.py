@@ -21,7 +21,6 @@ def exit(status, info):
 				"info" : info }
 
     r = requests.post(args.monitoring_server, json=content)
-    print(r.content)
     sys.exit(0)
 
 
@@ -38,6 +37,9 @@ if __name__ == "__main__":
     parser.add_argument("--monitoring-server", required=True)
     parser.add_argument("--monitoring-token", required=True)
     parser.add_argument("--monitoring-service-name", required=True)
+
+    parser.add_argument("--smtp-sender-pass", help="Sender password for SMTP if login is required")
+    parser.add_argument("--imap-target", help="IMAP-Target Server if different from '--target''")
 
     args = parser.parse_args()
 
@@ -58,6 +60,8 @@ if __name__ == "__main__":
     # send mail #
     server = smtplib.SMTP(args.target, args.port)
     server.starttls(context=context)
+    if args.smtp_sender_pass:
+        server.login(args.sender, args.smtp_sender_pass)
     server.sendmail(args.sender, args.receiver, message)
 
     # give server some time to deliver #
@@ -66,7 +70,9 @@ if __name__ == "__main__":
     # check imap #
     for x in range(0,5):
 
-        with imaplib.IMAP4_SSL(args.target) as imap:
+        imap_target = args.imap_target or args.target
+
+        with imaplib.IMAP4_SSL(imap_target) as imap:
             imap.login(imap_user, args.imap_pass)
             imap.select('INBOX')
             status, messages = imap.search(None, 'ALL')
@@ -76,6 +82,9 @@ if __name__ == "__main__":
                 exit("CRITICAL", "IMAP search failed")
 
             for message in messages[0].split(b' '):
+
+                if not message:
+                    continue
 
                 status, data = imap.fetch(message, '(RFC822)')
 
