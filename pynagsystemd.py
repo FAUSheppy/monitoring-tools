@@ -22,18 +22,21 @@ class SystemdStatus(nagiosplugin.Resource):
             p = subprocess.Popen(['systemctl', '--failed', '--no-legend'],
                                  stderr=subprocess.PIPE,
                                  stdin=subprocess.PIPE,
-                                 stdout=subprocess.PIPE)
-            pres, err = p.communicate()
+                                 stdout=subprocess.PIPE,
+                                 universal_newlines=True)
+
+            stdout, err = p.communicate()
         except OSError as e:
             raise nagiosplugin.CheckError(e)
 
         if err:
             raise nagiosplugin.CheckError(err)
 
-        if pres:
+        if stdout:
+            lines = list(filter(lambda x: "service" in x, stdout.split("\n")))
             result = ""
-            for line in io.StringIO(pres.decode('utf-8')):
-                result = "%s %s" % (result, line.split(' ')[0])
+            for line in lines:
+                result += "{}".format(line.split(' ')[1])
 
             return [nagiosplugin.Metric('systemd', (False, result), context='systemd')]
 
