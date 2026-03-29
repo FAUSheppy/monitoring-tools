@@ -1,0 +1,12 @@
+FROM alpine
+
+RUN apk add --no-cache py3-pip
+
+WORKDIR /app
+RUN python3 -m pip install --no-cache-dir --break-system-packages requests PyYaml
+
+COPY check_smtp_imap.py .
+
+EXPOSE 5000/tcp
+ENTRYPOINT ["python"] 
+CMD ["check_smtp_imap.py"]
